@@ -15,6 +15,8 @@ class ContactController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', Contact::class);
+        return request()->user()->contacts;
     }
 
     /**
@@ -36,8 +38,10 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         //
+        $this->authorize('create', Contact::class);
         $this->validate($request, $this->validateData());
-        Contact::create($request->all());
+        request()->user()->contacts()->create($request->all());
+        //Contact::create($request->all());
     }
 
     /**
@@ -49,6 +53,7 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
         //
+        $this->authorize('view', $contact);
         return $contact;
     }
 
@@ -73,6 +78,8 @@ class ContactController extends Controller
     public function update(Request $request, Contact $contact)
     {
         //
+        $this->authorize('update', $contact);
+
         $this->validate($request, $this->validateData());
         $contact->update($request->all());
     }
@@ -86,6 +93,8 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         //
+        $this->authorize('delete', $contact);
+
         $contact->delete();
     }
 
@@ -97,5 +106,12 @@ class ContactController extends Controller
             'birthday' => 'required',
             'company' => 'required|string'
         ];
+    }
+
+    private function check_if_user_is_authenticated(Contact $contact)
+    {
+        if (request()->user()->isNot($contact->user)) {
+            return response([], 403);
+        }
     }
 }

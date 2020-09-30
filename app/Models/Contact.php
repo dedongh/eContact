@@ -13,7 +13,7 @@ class  Contact extends Model
     protected $table = 'contacts';
 
     protected $fillable = [
-        'name','email','birthday','company'
+        'name','email','birthday','company','user_id'
     ];
 
     /*protected $hidden = [
@@ -28,5 +28,10 @@ class  Contact extends Model
     public function setBirthdayAttribute($birthday)
     {
         $this->attributes['birthday'] = Carbon::parse($birthday);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

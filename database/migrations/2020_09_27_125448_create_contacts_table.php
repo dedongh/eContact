@@ -19,6 +19,7 @@ class CreateContactsTable extends Migration
             $table->string('email');
             $table->timestamp('birthday');
             $table->string('company');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

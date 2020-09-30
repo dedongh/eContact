@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactFactory extends Factory
@@ -27,7 +28,9 @@ class ContactFactory extends Factory
             'email' => $this->faker->safeEmail,
             //'birthday' => $this->faker->date('m-d-Y'),
             'birthday' => '05/26/1995',
-            'company' => $this->faker->company
+            'company' => $this->faker->company,
+            'user_id' => User::factory(),
+
         ];
     }
 }
