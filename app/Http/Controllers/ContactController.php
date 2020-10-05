@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContactController extends Controller
 {
@@ -16,7 +18,8 @@ class ContactController extends Controller
     {
         //
         $this->authorize('viewAny', Contact::class);
-        return request()->user()->contacts;
+
+        return  ContactResource::collection(request()->user()->contacts);
     }
 
     /**
@@ -40,8 +43,13 @@ class ContactController extends Controller
         //
         $this->authorize('create', Contact::class);
         $this->validate($request, $this->validateData());
-        request()->user()->contacts()->create($request->all());
-        //Contact::create($request->all());
+
+        $contact = request()->user()->contacts()->create($request->all());
+
+        return (new ContactResource($contact))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
+
     }
 
     /**
@@ -54,7 +62,7 @@ class ContactController extends Controller
     {
         //
         $this->authorize('view', $contact);
-        return $contact;
+        return new ContactResource($contact);
     }
 
     /**
@@ -82,6 +90,10 @@ class ContactController extends Controller
 
         $this->validate($request, $this->validateData());
         $contact->update($request->all());
+
+        return (new ContactResource($contact))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -96,6 +108,8 @@ class ContactController extends Controller
         $this->authorize('delete', $contact);
 
         $contact->delete();
+
+        return response([], Response::HTTP_NO_CONTENT);
     }
 
     private function validateData()
