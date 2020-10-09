@@ -4,11 +4,11 @@
         <div v-else>
             <div class="flex justify-between">
                 <div class="text-blue-400">
-                    < Back
+                   <a href="#" @click="$router.back()">< Back</a>
                 </div>
                 <div class="relative">
                     <router-link class="px-4 py-2 rounded text-sm text-green-500
-            border border-green-500 text-sm font-bold mr-2" :to="'/contact/' +contact.contact_id + '/edit'">Edit
+            border border-green-500 text-sm font-bold mr-2" :to="'/contacts/' +contact.contact_id + '/edit'">Edit
                     </router-link>
                     <a href="#" class="px-4 py-2 rounded text-sm text-red-500
             border border-red-500 text-sm font-bold" @click="modal = !modal">Delete</a>
@@ -23,6 +23,8 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="modal" @click="modal = !modal" class="bg-black opacity-25 absolute right-0 left-0 bottom-0 z-10"></div>
+
             </div>
 
             <div class="flex items-center pt-6">
@@ -59,6 +61,9 @@
                 })
                 .catch(error => {
                     this.loading = false;
+                    if (error.response.status === 404) {
+                        this.$router.push('/contacts');
+                    }
                 });
         },
         data: function () {
@@ -71,9 +76,11 @@
         methods: {
             destroy: function (){
                 axios.delete('/api/contacts/' + this.$route.params.id)
-                .then()
+                .then(response => {
+                    this.$router.push('/contacts');
+                })
                 .catch(error => {
-
+                    alert('Unable to delete contact');
                 })
             }
         }
