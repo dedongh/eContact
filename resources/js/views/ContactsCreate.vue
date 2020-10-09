@@ -36,6 +36,8 @@
             submitForm: function (){
                 axios.post('/api/contacts', this.form)
                 .then(response => {
+                    // push a new view into our router
+                    this.$router.push(response.data.links);
 
                 })
                 .catch(errors => {

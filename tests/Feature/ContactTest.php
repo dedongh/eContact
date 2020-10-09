@@ -228,13 +228,7 @@ class ContactTest extends TestCase
 
     }
 
-    /**
-     * @tests
-     */
-    public function test()
-    {
 
-    }
 
 
     private function data()
