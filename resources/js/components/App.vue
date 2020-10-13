@@ -28,7 +28,7 @@
                         </svg>
                         <div class="tracking-wide pl-3">Contacts</div>
                     </router-link>
-                    <router-link to="/" class="flex items-center py-2 hover:text-blue-600 text-sm">
+                    <router-link to="/birthdays" class="flex items-center py-2 hover:text-blue-600 text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                              class="fill-current text-blue-600 w-5 h-5">
                             <path class="st0"
@@ -49,7 +49,10 @@
             <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
                 <div class="h-16 px-6 border-b border-gray-400 flex items-center justify-between">
                     <div>Contacts</div>
-                    <UserCircle :name="user.name"/>
+                    <div class="flex items-center">
+                        <SearchBar/>
+                        <UserCircle :name="user.name"/>
+                    </div>
                 </div>
                 <div class="flex flex-col overflow-y-hidden flex-1">
                     <router-view class="p-6 overflow-x-hidden"></router-view>
@@ -63,20 +66,23 @@
 
 <script>
     import UserCircle from "./UserCircle";
+    import SearchBar from "./SearchBar";
+
     export default {
         name: "App",
         props: [
             'user'
         ],
-        components:{
-          UserCircle,
+        components: {
+            UserCircle,
+            SearchBar,
         },
         created() {
             window.axios.interceptors.request.use(
                 (config) => {
                     if (config.method === 'get') {
                         config.url = config.url + '?api_token=' + this.user.api_token;
-                    }else {
+                    } else {
                         config.data = {
                             ...config.data,
                             api_token: this.user.api_token

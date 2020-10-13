@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BirthdayController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('contacts', ContactController::class);
+
+    Route::get('birthdays', [BirthdayController::class, 'index']);
+    Route::post('search', [SearchController::class, 'index']);
 });
 
 //Route::post('/contacts', [ContactController::class, 'store']);
