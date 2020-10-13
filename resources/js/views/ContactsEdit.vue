@@ -54,7 +54,7 @@
 
         methods: {
             submitForm: function (){
-                axios.patch('/api/contacts'+ this.$route.params.id, this.form)
+                axios.patch('/api/contacts/'+ this.$route.params.id, this.form)
                     .then(response => {
                         // push a new view into our router
                         this.$router.push(response.data.links);

@@ -17,7 +17,7 @@
 
           <div v-if="focus" class="absolute bg-blue-900 text-white rounded-lg
         p-4 w-96 right-0 mr-6 mt-2 shadow z-20">
-              <div v-if="results === 0">No results found for {{searchTerm}}</div>
+              <div v-if="results == 0">No results found for {{searchTerm}}</div>
               <div v-for="result in results" @click="focus = false">
                   <router-link :to="result.links" class="block py-2">
                       <div class="flex items-center">

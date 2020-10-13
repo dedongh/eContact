@@ -37,7 +37,7 @@
                         <div class="tracking-wide pl-3">Birthdays</div>
                     </router-link>
                     <p class="pt-12 text-gray-500 text-xs uppercase font-bold">Settings</p>
-                    <router-link to="/" class="flex items-center py-2 hover:text-blue-600 text-sm">
+                    <router-link to="/logout" class="flex items-center py-2 hover:text-blue-600 text-sm">
                         <svg viewBox="0 0 24 24" class="fill-current text-blue-600 w-5 h-5">
                             <path
                                 d="M21 3h-3.8c-.7 0-1.3-.6-1.3-1.3S16.5.4 17.2.4h5.1c.7 0 1.3.6 1.3 1.3v20.5c0 .7-.6 1.3-1.3 1.3h-5.1c-.7 0-1.3-.6-1.3-1.3 0-.7.6-1.3 1.3-1.3H21V3zm-6.9 7.7L8.6 5.2c-.5-.5-.6-1.3-.1-1.8s1.3-.5 1.8 0l7.7 7.7c.8.8.2 2.2-.9 2.2H1.8c-.7 0-1.3-.6-1.3-1.3 0-.7.6-1.3 1.3-1.3h12.3zm-1.6 4.8c.5-.5 1.3-.4 1.8.1s.4 1.3-.1 1.8l-3.8 3.2c-.5.5-1.3.4-1.8-.1-.6-.5-.5-1.3 0-1.7l3.9-3.3z"/>
@@ -48,7 +48,7 @@
             </div>
             <div class="flex flex-col flex-1 h-screen overflow-y-hidden">
                 <div class="h-16 px-6 border-b border-gray-400 flex items-center justify-between">
-                    <div>Contacts</div>
+                    <div>{{title}}</div>
                     <div class="flex items-center">
                         <SearchBar/>
                         <UserCircle :name="user.name"/>
@@ -73,11 +73,14 @@
         props: [
             'user'
         ],
+
         components: {
             UserCircle,
             SearchBar,
         },
         created() {
+            this.title = this.$route.meta.title;
+
             window.axios.interceptors.request.use(
                 (config) => {
                     if (config.method === 'get') {
@@ -92,6 +95,19 @@
                     return config;
                 }
             )
+        },
+        data: function (){
+            return {
+                title: '',
+            }
+        },
+        watch: {
+            $route(to, from){
+                this.title = to.meta.title
+            },
+            title() {
+                document.title = this.title
+            }
         }
     }
 </script>
